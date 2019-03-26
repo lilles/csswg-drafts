@@ -2067,6 +2067,114 @@ must be rendered so that:
 <hr title="Separator from footer">
 
 
+<h2 id="color-schemes">UA rendering based on color schemes</h2>
+
+A user agent may provide a user preferred color scheme which is the result of the user
+selecting that scheme within the user agent itself, or based on the color scheme selected
+the UAs environment like an operating system. This preferred scheme is used to evaluate the
+'prefers-color-scheme' media feature. This specification introduces a 'supported-color-schemes'
+property to affect UA specific rendering on a per element basis.
+
+The 'prefers-color-scheme' media query is not affected by the used color scheme as that would
+have introduced a circular dependency. Similarly, the used scheme does not result in a different
+UA stylesheet, but the other computed or used values may.
+
+This specification does not deal with how the UA decides on the preferred color scheme.
+
+<h3 id="supported-color-schemes">Switching color schemes: the 'supported-color-schemes' property</h3>
+
+<pre class="propdef">
+Name: supported-color-schemes
+Value: [ light || dark || <<custom-ident>> ]* | only?
+Initial: light
+Applies to: all elements
+Inherited: yes
+Percentages: N/A
+Computed value: see prose
+Animation Type: not animatable
+</pre>
+
+If the specified value only contains unsupported color schemes, the computed value is ''light''.
+Otherwise, the computed value is the specified value with unsupported and duplicate color schemes removed.
+
+Note: The rationale behind specifying computed and used style (below) like this is to have to store
+as little as possible (bitset of supported schemes) while not having to recreate computed
+styles on preferred color scheme changes.
+
+<dl dfn-type=value dfn-for=supported-color-schemes>
+	<dt><dfn>light</dfn>
+	<dd>The element supports rendering with a light theme.
+
+	<dt><dfn>dark</dfn>
+	<dd>The element supports rendering with a dark theme.
+
+	<dt><<custom-ident>>
+	<dd>
+		Other color scheme names are allowed to be forward compatible with color schemes added later without
+		dropping the declaration in UAs not supporting any such themes.
+	<dt><dfn>only</dfn>
+	<dd>
+		Ask the UA to use one of the listed color schemes when the UA preferred color scheme is not listed
+		in the supported color schemes. This can typically be used force a dark theme rendering when the preferred
+		color scheme is light.
+
+		<div class="example">
+			Force dark theming:
+			<pre><code class="lang-css">
+				:root {
+					supported-color-schemes: dark only;
+				}
+			</code></pre>
+		</div>
+</dl>
+
+<h3>Resolving the used color scheme</h3>
+
+The UA provides a preferred color scheme which is used to evaluate the ''@media/prefers-color-scheme''
+media feature. For the following, a preferred color scheme of ''@media/prefers-color-scheme/no-preference''
+maps to ''light''. The preferred color scheme is used to resolve to a used color scheme per element
+as follows:
+
+<ol>
+	<li>
+		If the computed value of 'supported-color-schemes' contains the preferred color
+		scheme, make that the used color scheme.
+
+	<li>
+		If the computed value of 'supported-color-schemes' contains the ''supported-color-schemes/only'' keyword,
+		pick one of the 'supported-color-schemes' as the used color scheme.
+
+		Issue: Does it make sense to allow multiple color schemes before ''supported-color-schemes/only''?
+
+	<li>
+		Otherwise the used color scheme is ''supported-color-schemes/light''.
+</ol>
+
+<h3>Rendering effects</h3>
+
+The UA should take the chosen color scheme into account when rendering the default
+page background, form controls, the default selection color, and other UA-controlled
+UI like misspelling underlines.
+
+When the canvas background is not opaque, a
+<a href="https://drafts.csswg.org/css-backgrounds/#special-backgrounds">UA dependent background</a>
+is seen behind the canvas. This background should be dark instead of light when the used color
+scheme for the root element of the top level document is ''supported-color-schemes/dark''.
+
+Issue: Should the spec say white/black instead of light/dark? Probably not since this is defined as
+UA dependent?
+
+Note: The background color of the canvas is typically 'transparent'. Changing the UA background
+behind the canvas allows for iframes to still be 'transparent' by default when both the parent
+document and the iframe uses a dark theme.
+
+The UA stylesheet should include a named color, not exposed to authors, specified on :root. This
+named color computes to the same computed value as the initial value of ''color'' when the resolved
+theme for the element is light, and <code>rgb(255, 255, 255)</code> for dark.
+
+Issue: Making the computed value of a color relying on the used color theme could be an issue.
+
+
 <h2 class="no-num" id="acknowledgments">Appendix A. Acknowledgments</h2>
 
 This appendix is <em>informative</em>.
