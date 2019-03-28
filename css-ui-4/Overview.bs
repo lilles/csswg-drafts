@@ -2085,7 +2085,7 @@ This specification does not deal with how the UA decides on the preferred color 
 
 <pre class="propdef">
 Name: supported-color-schemes
-Value: [ light || dark || <<custom-ident>> ]* | only?
+Value: <<color-scheme>>* | only?
 Initial: light
 Applies to: all elements
 Inherited: yes
@@ -2102,16 +2102,22 @@ as little as possible (bitset of supported schemes) while not having to recreate
 styles on preferred color scheme changes.
 
 <dl dfn-type=value dfn-for=supported-color-schemes>
-	<dt><dfn>light</dfn>
-	<dd>The element supports rendering with a light theme.
-
-	<dt><dfn>dark</dfn>
-	<dd>The element supports rendering with a dark theme.
-
-	<dt><<custom-ident>>
+	<dt><<color-scheme>></dt>
 	<dd>
-		Other color scheme names are allowed to be forward compatible with color schemes added later without
-		dropping the declaration in UAs not supporting any such themes.
+		<pre class="prod"><dfn id="color-scheme-value">&lt;color-scheme></dfn> = ''light'' | ''dark'' | <<custom-ident>></pre>
+		<dl>
+			<dt><dfn>light</dfn></dt>
+			<dd>The element supports rendering with a light theme.
+
+			<dt><dfn>dark</dfn></dt>
+			<dd>The element supports rendering with a dark theme.
+
+			<dt><<custom-ident>></dt>
+			<dd>
+				Other color scheme names are allowed to be forward compatible with color schemes added later without
+				dropping the declaration in UAs not supporting those themes.
+		</dl>
+
 	<dt><dfn>only</dfn>
 	<dd>
 		Ask the UA to use one of the listed color schemes when the UA preferred color scheme is not listed
