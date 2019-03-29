@@ -2085,7 +2085,7 @@ This specification does not deal with how the UA decides on the preferred color 
 
 <pre class="propdef">
 Name: supported-color-schemes
-Value: <<color-scheme>>* | only?
+Value: <<color-scheme>>+ only?
 Initial: light
 Applies to: all elements
 Inherited: yes
