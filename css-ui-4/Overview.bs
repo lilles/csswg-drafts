@@ -2070,7 +2070,7 @@ must be rendered so that:
 <h2 id="color-schemes">UA rendering based on color schemes</h2>
 
 A user agent may provide a user preferred color scheme which is the result of the user
-selecting that scheme within the user agent itself, or based on the color scheme selected
+selecting that scheme within the user agent itself, or based on the color scheme selected in
 the UAs environment like an operating system. This preferred scheme is used to evaluate the
 'prefers-color-scheme' media feature. This specification introduces a 'supported-color-schemes'
 property to affect UA specific rendering on a per element basis.
@@ -2079,7 +2079,7 @@ The 'prefers-color-scheme' media query is not affected by the used color scheme 
 have introduced a circular dependency. Similarly, the used scheme does not result in a different
 UA stylesheet, but the other computed or used values may.
 
-This specification does not deal with how the UA decides on the preferred color scheme.
+How the UA decides upon the preferred color scheme is out of scope for this specification.
 
 <h3 id="supported-color-schemes">Switching color schemes: the 'supported-color-schemes' property</h3>
 
@@ -2138,8 +2138,8 @@ styles on preferred color scheme changes.
 
 The UA provides a preferred color scheme which is used to evaluate the ''@media/prefers-color-scheme''
 media feature. For the following, a preferred color scheme of ''@media/prefers-color-scheme/no-preference''
-maps to ''light''. The preferred color scheme is used to resolve to a used color scheme per element
-as follows:
+maps to ''light''. The 'supported-color-schemes' and the preferred color scheme resolves to a used color
+scheme per element as follows:
 
 <ol>
 	<li>
@@ -2148,7 +2148,7 @@ as follows:
 
 	<li>
 		If the computed value of 'supported-color-schemes' contains the ''supported-color-schemes/only'' keyword,
-		pick one of the 'supported-color-schemes' as the used color scheme.
+		make the first UA supported of the 'supported-color-schemes', per grammar order, the used color scheme.
 
 		Issue: Does it make sense to allow multiple color schemes before ''supported-color-schemes/only''?
 
@@ -2158,7 +2158,7 @@ as follows:
 
 <h3>Rendering effects</h3>
 
-The UA should take the chosen color scheme into account when rendering the default
+The UA should take the used color scheme into account when rendering the default
 page background, form controls, the default selection color, and other UA-controlled
 UI like misspelling underlines.
 
