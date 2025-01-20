@@ -1367,6 +1367,9 @@ Scroll State Container Features</h3>
 	[=scroll container's=] [=scrollport=]. An example of the former is the
 	''scrollable'' feature, ''snapped'' the latter.
 
+	When a [=scroll-state feature=] matches the scroller itself, and the
+	[=query container=] is the root element, the viewport is queried instead.
+
 <h4 id="updating-scroll-state">
 Updating Scroll State</h4>
 
